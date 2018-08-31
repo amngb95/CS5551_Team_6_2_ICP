@@ -36,7 +36,7 @@
     <br>
     <button id="submit" ng-click="getWeather()"> Show Weather </button>
     <br>
-    <table border="6" width="50%" cellpadding="4",cellspacing="3">
+    <table border="6" align="center" width="50%" cellpadding="4",cellspacing="3">
         </tr>>
         <tr>
             <th>Time</th>

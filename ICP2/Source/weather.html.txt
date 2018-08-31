@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Angular Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+<body>
+<style type="text/css">
+    body{
+        background-image:url("Cloud_image.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+    </style>
+<h1 align="center">Weather Forecast</h1>
+<script>
+    var app = angular.module('application', []);
+    app.controller('controller', function($scope,$http) {
+        $scope.getWeather = function(){
+            var query='https://api.wunderground.com/api/36b799dc821d5836/hourly/q/'+$scope.stateId +'/'+ $scope.city+'.json'
+            $http.get(query).then(function(data) {
+                console.log(data);
+                $scope.weathers = data.data.hourly_forecast;
+            });
+        }
+    });
+</script>
+
+<div ng-app="application" ng-controller="controller">
+
+    StateId: <input type="text" ng-model="stateId"><br>
+    <br>
+    City: <input type="text" ng-model="city"><br>
+    <br>
+    <button id="submit" ng-click="getWeather()"> Show Weather </button>
+    <br>
+    <table border="6" width="50%" cellpadding="4",cellspacing="3">
+        </tr>>
+        <tr>
+            <th>Time</th>
+            <th>Temperature in Fahrenheit</th>
+            <th>Weather Condition</th>
+        </tr>
+        <tr align="center" ng-repeat="weather in weathers | limitTo:5">
+            <td>{{weather.FCTTIME.civil}}</td>
+            <td>{{weather.feelslike.english}} </td>
+            <td>{{weather.condition}}</td>
+        </tr>
+    </table>
+<br>
+    <br>
+</div>
+</body>
+</html>

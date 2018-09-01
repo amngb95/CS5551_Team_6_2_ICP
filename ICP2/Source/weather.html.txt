@@ -34,10 +34,8 @@
     <br>
     City: <input type="text" ng-model="city"><br>
     <br>
-    <button id="submit" ng-click="getWeather()"> Show Weather </button>
-    <br>
+    <button id="submit" ng-click="getWeather()"> Show Weather</button><br>
     <table border="6" align="center" width="50%" cellpadding="4",cellspacing="3">
-        </tr>>
         <tr>
             <th>Time</th>
             <th>Temperature in Fahrenheit</th>
@@ -46,10 +44,10 @@
         <tr align="center" ng-repeat="weather in weathers | limitTo:5">
             <td>{{weather.FCTTIME.civil}}</td>
             <td>{{weather.feelslike.english}} </td>
-            <td>{{weather.condition}}</td>
+            <td>{{weather.condition}} <img src="{{weather.icon_url}}"></td>
+
         </tr>
     </table>
-<br>
     <br>
 </div>
 </body>

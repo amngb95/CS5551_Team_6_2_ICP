@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nutrition Calculator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<style type="text/css">
+    body{
+        background: greenyellow;
+        color: black;
+        font-family: sans-serif;
+    }
+    h1 {
+        border: 2px solid red;
+        border-radius: 8px;
+        font-size: 50px;
+    }
+</style>
+<h1 align="center">Nutrition Calculation</h1>
+<script>
+    var app = angular.module('application', []);
+    app.controller('controller', function($scope,$http) {
+        $scope.getinfo = function () {
+            var inputText = $scope.inputText;
+            console.log(inputText);
+
+            if (inputText==null | inputText=='') {
+                alert('Please Enter Valid Input');
+            } else {
+                var query = 'https://api.nutritionix.com/v1_1/search/'
+                    + inputText + '?results=0:1&fields=*&appId=1a1939c2&appKey=e49edb974153e4f040a7cb41227533ac'
+                $http.get(query).then(function (data) {
+                    console.log(data);
+                    if(data.data.hits.length==0){
+                        alert('Please Enter the correct Input type to get the Nutrition Details');
+                    }else {
+                        var wURL = 'https://stream.watsonplatform.net/text-to-speech/api/v1/' +
+                            'synthesize?username=c8a7c93c-81c4-4f52-a023-3c5a20a60eb6 &password=HaYV0qBcjQrk&text='+inputText ;
+                        var mySound = new Audio( wURL );
+                        mySound.play();
+                        $scope.calculator = data.data.hits;
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+<div ng-app="application" ng-controller="controller">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="inputText">InputText:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" ng-model="inputText" placeholder="Enter InputText">
+            </div>
+        </div>
+    </form>
+        <form class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" ng-click="getinfo()">GetNutritionValues</button>
+            </div>
+        </form>>
+      <ul style="align: center" ng-repeat="x in calculator">
+        <p>The nutrition Values calories and weight in grams for {{x.fields.item_name}} is below:</p>
+          <li><strong>Calories</strong> : {{x.fields.nf_calories}}</li>
+          <li><strong>Weight in grams</strong> : {{x.fields.nf_serving_weight_grams}}</li>
+          <li><strong>Proteins</strong> : {{x.fields.nf_Protein}}</li>
+          <li><strong>Carbohydrates</strong> : {{x.fields.nf_total_carbohydrate}}</li>
+    </ul>
+</div>
+<script>
+
+    </script>
+</body>
+</html>

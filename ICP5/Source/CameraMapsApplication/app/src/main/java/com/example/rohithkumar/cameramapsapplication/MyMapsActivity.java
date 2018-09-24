@@ -39,21 +39,9 @@ public class MyMapsActivity extends FragmentActivity implements OnMapReadyCallba
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-        if(!mMap.isMyLocationEnabled()) {
-            // Enable Map if Location is disabled.
-            mMap.setMyLocationEnabled(true);
-        }
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        if (myLocation == null) {
-            System.out.println("myLocation is Null");
-            Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-            String provider = lm.getBestProvider(criteria, true);
-            myLocation = lm.getLastKnownLocation(provider);
-        }
 
         if(myLocation!=null){
             // Latitude, Longitude setting in LatLng Class.

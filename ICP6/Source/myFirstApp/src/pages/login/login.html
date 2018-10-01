@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>login</ion-title>
+  </ion-navbar>
+</ion-header>
+<style>
+  .bg{
+    background-color: white;
+  }
+</style>
+
+<ion-content padding class="bg">
+  <h2 align="center">Welcome to login page Please Login</h2>
+  <br>
+  <form align="center">
+      <label style="font-size: 15px"><br><strong>UserName:</strong></label>
+      <input type="text">
+      <br>
+      <label style="font-size: 15px"><br><strong>Password:</strong></label>
+      <input type="password">
+      <br>
+      <br>
+      <label>
+        <input type="checkbox"><strong>Remember me</strong></label>
+      <br>
+      <br>
+      <button ion-button round style="font-size: 15px" (click)="home()">LogIn</button>
+      <br>
+      <br>
+      New User?<a style="font-size: 25px;font-color:black" (click)="reg()">SignUp</a>
+      <br>
+  </form>
+</ion-content>

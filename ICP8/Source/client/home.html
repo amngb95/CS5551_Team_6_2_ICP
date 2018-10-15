@@ -42,7 +42,7 @@
     app.controller('controller', function($scope,$http) {
         $scope.getDetails = function(){
             console.log('check');
-            var query='http://127.0.0.1:3000/anvesh/nlp?Text='+$scope.stateId
+            var query='http://127.0.0.1:3000/anvesh/nlp?Text='+$scope.inputText
             $http.post(query,{
                 headers: {
                     'Content-Type' : 'application/json',
@@ -69,7 +69,7 @@
 
 </div>
     <div class="col col-sm-6" style="text-align: center">
-        <input type="text" ng-model="stateId" style="width: 600px; font-size: 25px;" placeholder="Enter InputText">
+        <input type="text" ng-model="inputText" style="width: 600px; font-size: 25px;" placeholder="Enter InputText">
         <br/>
         <br/>
         <button type="button" id="submit" ng-click="getDetails()" class="btn btn-primary"> Show Details</button><br>

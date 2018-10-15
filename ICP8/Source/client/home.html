@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>ICP8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Project NLP</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+
+        </ul>
+    </div>
+</nav>
+
+
+<style type="text/css">
+    body{
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
+<script>
+    var app = angular.module('application', []);
+    app.controller('controller', function($scope,$http) {
+        $scope.getDetails = function(){
+            console.log('check');
+            var query='http://127.0.0.1:3000/anvesh/nlp?Text='+$scope.stateId
+            $http.post(query,{
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Access-Control-Allow-Credentials' : true,
+                    'Access-Control-Allow-Origin':'*',
+                    'Access-Control-Allow-Methods':'POST',
+                    'Access-Control-Allow-Headers':'Content-Type',
+                }
+            }).then(function(data) {
+                console.log(data);
+                $scope.weathers = data.data.tokens;
+            });
+        }
+    });
+</script>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div ng-app="application" ng-controller="controller">
+<div class="col col-sm-3">
+
+</div>
+    <div class="col col-sm-6" style="text-align: center">
+        <input type="text" ng-model="stateId" style="width: 600px; font-size: 25px;" placeholder="Enter InputText">
+        <br/>
+        <br/>
+        <button type="button" id="submit" ng-click="getDetails()" class="btn btn-primary"> Show Details</button><br>
+</div>
+    <div class="col col-sm-3">
+
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <table border="6" align="center" width="50%" cellpadding="4",cellspacing="3">
+        <tr>
+            <th>Content</th>
+            <th>Parts of Speech</th>
+            <th>Gender</th>
+            <th>Number</th>
+        </tr>
+        <tr align="center" ng-repeat="data in weathers">
+            <td>{{data.text.content}}</td>
+            <td>{{data.partOfSpeech.tag}}</td>
+            <td>{{data.partOfSpeech.tense}}</td>
+            <td>{{data.partOfSpeech.number}}</td>
+        </tr>
+    </table>
+    <br>
+</div>
+</body>
+</html>

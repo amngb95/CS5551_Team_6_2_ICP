@@ -1,87 +1,121 @@
 <html ng-app="demoMongo" ng-controller="MongoRestController">
 <head >
     <title>Student Details</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/newStyle.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Rokkitt' rel='stylesheet' type='text/css'>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style type="text/css">
-        table.table1 {
-            border-style: solid;
-            border-width: 3px;
-            border-left-width: 3px;
-            border-right-width: 3px;
-            border-spacing: 30px 45px;
-            border-color: blue;
+    <script type="text/javascript" src="http://code.angularjs.org/1.1.1/angular.js"></script>
+    <script type="text/javascript" src="http://code.angularjs.org/1.1.1/angular-resource.js"></script>
+    <script type="text/javascript" src="http://code.angularjs.org/1.1.1/angular-sanitize.js"></script>
+    <script>
+        function meanStack(evt, formDisp) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(formDisp).style.display = "block";
+            evt.currentTarget.className += " active";
         }
-    </style>
 
+
+        var myapp = angular.module('demoMongo',[]);
+        myapp.run(function ($http) {
+            // Sends this header with any AJAX request
+            $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            // Send this header only in post requests. Specifies you are sending a JSON object
+            $http.defaults.headers.post['dataType'] = 'json'
+        });
+        myapp.controller('MongoRestController',function($scope,$http){
+            $scope.insertData = function(){
+                console.log($scope.formData.studentId);
+                console.log($scope.formData.studentName);
+                console.log($scope.formData.courseStudy);
+                console.log($scope.formData.major);
+                console.log($scope.formData.minor);
+                var dataParams = {
+                    'studentId' : $scope.studentId,
+                    'studentName' : $scope.studentName,
+                    'courseStudy' : $scope.courseStudy,
+                    'major' : $scope.major,
+                    'minor':$scope.minor
+                };
+                var config = {
+                    headers : {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                    }
+                }
+                var req = $http.post('http://127.0.0.1:3000/student/create',$scope.formData);
+                req.success(function(data, status, headers, config) {
+                    $scope.message = data;
+                    console.log(data);
+                    alert("Details are saved Successfully saved in MongoDB");
+                });
+                req.error(function(data, status, headers, config) {
+                    alert( "failure message: " + JSON.stringify({data: data}));
+                });
+            };
+            $scope.fetchData = function(){
+                var request=$http.get('http://127.0.0.1:3000/student/search?major='+$scope.major);
+                request.success(function(data, status, headers, config) {
+                    $scope.response = data.data;
+                    console.log(data);
+                });
+                request.error(function(data, status, headers, config) {
+                    alert( "failure message: " + JSON.stringify({data: data}));
+                });
+            }
+        });
+    </script>
 
 </head>
 <body>
-<h1 style="text-align: center">MeanStack CRUD Application</h1>
-<div class="wrap" style="width:30%; float: left">
-    <div class="contact-form" style="width:100%;">
-        <form align="center" class="contact_form" ng-submit="insertData()" name="contact_form">
+<h1 style="text-align: center">MeanStack Application</h1>
+<div class="tab">
+    <button class="tablinks" href="#Create" onclick="meanStack(event,'Create')">Create</button>
+    <button href="#Fetch tablinks" onclick="meanStack(event,'Fetch')">Fetch</button>
+</div>
+<div id="Create" style="width: 100%" align="center" class="tabcontent">
+    <h2>Create StudentDetails</h2>
+    <form class="container" style="align-self: center;width: 50%; background-color: #333"
+          ng-submit="insertData()" >
+                    <label for="studentId" style="color: white"><b>StudentId</b></label>
+                    <input type="text" id="studentId" name="studentId"
+                           placeholder="Enter StudentId" ng-model="formData.studentId" required >
 
-            <h2>Create StudentDetails</h2>
-            <table class="table1" align="center"cellpadding="8"style="width: 400px;height:125px">
-                <tr>
-                    <td> <label style="font-size: 15px"><strong>StudentId:</strong></label></td>
-                    <td><input type="text" class="textbox" name="studentId" placeholder="Enter StudentId"
-                           ng-model="formData.studentId" required /></td>
-                </tr>
-                <tr>
-                    <td> <label style="font-size: 15px"><strong>StudentName:</strong></label></td>
-                    <td><input type="text" class="textbox" name="studentName" ng-model="formData.studentName"
-                           placeholder="Enter StudentName" required /></td>
-                </tr>
-                <tr>
-                    <td> <label style="font-size: 15px"><strong>CourseStudy:</strong></label></td>
-                    <td><input type="text" class="textbox" name="courseStudy" ng-model="formData.courseStudy"
-                           placeholder="Enter Course of Study" required /></td>
-                </tr>
-                <tr>
-                    <td> <label style="font-size: 15px"><strong>Major:</strong></label></td>
-                    <td><input type="text" class="textbox" name="major" ng-model="formData.major"
-                           placeholder="Enter the major" required /></td>
-                </tr>
-                <tr>
-                    <td><label style="font-size: 15px"><strong>Minor:</strong></label></td>
-                    <td><input type="text" class="textbox" name="minor" ng-model="formData.minor"
-                           placeholder="Enter the minor" required /></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center">
-                            <input type="submit" name="Sign In" style="width:30%;text-align: center" value="Send Details"/>
-                    </td>
-                </tr>
-            </table>
+        <label for="studentName" style="color: white"><b>StudentName</b></label>
+        <input type="text" id="studentName" name="studentName"
+               placeholder="Enter StudentName" ng-model="formData.studentName" required >
 
-            <div class="clear"></div>
+        <label for="course" style="color: white"><b>CourseOfStudy</b></label>
+        <input type="text" id="course" name="course"
+               placeholder="Enter CourseOfStudy" ng-model="formData.courseStudy" required >
+
+        <label for="major" style="color: white"><b>Major</b></label>
+        <input type="text" id="major" name="major"
+               placeholder="Enter the Major" ng-model="formData.major" required >
+
+        <label for="minor" style="color: white"><b>Minor</b></label>
+        <input type="text" id="minor" name="minor"
+               placeholder="Enter the Minor" ng-model="formData.minor" required >
+        <input type="submit" value="Submit">
         </form>
-        <div class="clear"></div>
-    </div>
-    <div class="footer">
     </div>
 </div>
-<div class="wrap" style="width:30%;float: right">
-    <div align="center" class="contact-form" style="width:100%;padding-top: 10px">
+<div id="Fetch" style="width: 100%" align="center" class="tabcontent">
         <h2>Fetch StudentDetails</h2>
-        <form align="center" class="contact_form" ng-submit="fetchData()" name="contact_form">
-            <table class="table1" align="center"cellpadding="8"style="width: 400px;height:125px">
-                <tr>
-                    <td> <label style="font-size: 15px"><strong>Major:</strong></label></td>
-           <td> <input type="text" class="textbox" name="major" style="width:100%" ng-model="major"
-                       placeholder="Enter the Major to be Searched" required /></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center">
-            <input type="submit" name="Sign In" style="width:30%;text-align: center" value="fetch Details"/>
-                    </td>
-                </tr>
-            </table>
+
+    <form class="container" style="align-self: center;width: 50%;background-color: #333"
+          ng-submit="fetchData()" >
+        <label for="Major" style="color: white"><b>Major</b></label>
+        <input type="text" id="mjor" name="major"
+               placeholder="Enter the Major" ng-model="major" required >
+        <input type="submit" value="Search">
+    </form>
             <p>The StudentDetails for Major {{major}} are below:</p>
             <table border="1" align="center" width="50%" cellpadding="4",cellspacing="3">
                 <tr>
@@ -103,57 +137,5 @@
     </div>
 </div>
         </div>
-<script type="text/javascript" src="http://code.angularjs.org/1.1.1/angular.js"></script>
-<script type="text/javascript" src="http://code.angularjs.org/1.1.1/angular-resource.js"></script>
-<script type="text/javascript" src="http://code.angularjs.org/1.1.1/angular-sanitize.js"></script>
-<script>
-    var myapp = angular.module('demoMongo',[]);
-    myapp.run(function ($http) {
-        // Sends this header with any AJAX request
-        $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-        // Send this header only in post requests. Specifies you are sending a JSON object
-        $http.defaults.headers.post['dataType'] = 'json'
-    });
-    myapp.controller('MongoRestController',function($scope,$http){
-        $scope.insertData = function(){
-            console.log($scope.formData.studentId);
-            console.log($scope.formData.studentName);
-            console.log($scope.formData.courseStudy);
-            console.log($scope.formData.major);
-            console.log($scope.formData.minor);
-            var dataParams = {
-                'studentId' : $scope.studentId,
-                'studentName' : $scope.studentName,
-                'courseStudy' : $scope.courseStudy,
-                'major' : $scope.major,
-                'minor':$scope.minor
-            };
-            var config = {
-                headers : {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-                }
-            }
-            var req = $http.post('http://127.0.0.1:3000/student/create',$scope.formData);
-            req.success(function(data, status, headers, config) {
-                $scope.message = data;
-                console.log(data);
-                alert("Details are saved Successfully saved in MongoDB");
-            });
-            req.error(function(data, status, headers, config) {
-                alert( "failure message: " + JSON.stringify({data: data}));
-            });
-        };
-        $scope.fetchData = function(){
-            var request=$http.get('http://127.0.0.1:3000/student/search?major='+$scope.major);
-            request.success(function(data, status, headers, config) {
-                $scope.response = data.data;
-                console.log(data);
-            });
-            request.error(function(data, status, headers, config) {
-                alert( "failure message: " + JSON.stringify({data: data}));
-            });
-        }
-    });
-</script>
 </body>
 </html>

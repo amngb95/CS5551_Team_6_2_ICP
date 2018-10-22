@@ -7,8 +7,8 @@ var cors = require('cors');
 const db = require('mongoose');
 
 let student = require('./model/student');
-let db_promise = db.connect('mongodb://prakash12:prakash12@ds237832.mlab.com:37832/anvesh95');
-db_promise.then((result)=>{
+let db_check = db.connect('mongodb://prakash12:prakash12@ds237832.mlab.com:37832/anvesh95');
+db_check.then((result)=>{
   console.log("DB connection is established !");
 }).catch((error)=>{
   console.log("DB connection failed !.");

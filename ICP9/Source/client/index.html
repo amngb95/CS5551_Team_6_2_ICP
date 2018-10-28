@@ -49,6 +49,7 @@
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                     }
                 }
+                console.log($scope.formData);
                 var req = $http.post('http://127.0.0.1:3000/student/create',$scope.formData);
                 req.success(function(data, status, headers, config) {
                     $scope.message = data;

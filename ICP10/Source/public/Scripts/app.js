@@ -49,7 +49,7 @@ myapp.controller('MongoRestController',function($scope,$http,$window){
                 headers : {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                 }
-            }
+            };
             var req = $http.post('/enroll',dataParams)
                 .then(function(data, status, headers, config) {
                     // $scope.message = data;

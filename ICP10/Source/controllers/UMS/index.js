@@ -7,4 +7,4 @@ module.exports = function(app) {
             { success: true , message:"User authenticated successfully.",user:user}
         );
     });
-}
+};

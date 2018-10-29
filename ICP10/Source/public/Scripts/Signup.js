@@ -9,8 +9,8 @@ app.controller('Signupcontroller',function ($scope,$http){
         var Errormessage="";
         Errormessage= ValidateUserDetails(Name, username, password, confirmpassword);
         if(Errormessage!=null && Errormessage!=""){
-            alert(Errormessage)
-            return;
+            alert(Errormessage);
+
         }
         else{
             var array=[];
@@ -33,7 +33,7 @@ app.controller('Signupcontroller',function ($scope,$http){
             }
         }
     }
-})
+});
 function ValidateUserDetails(Name,username,password,confirmpassword) {
     //Signup - storing user details in local storage
     //Created by : Hiresh

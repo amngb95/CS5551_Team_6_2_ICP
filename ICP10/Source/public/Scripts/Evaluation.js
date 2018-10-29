@@ -19,10 +19,10 @@ var textAnalyze = function($scope,$http,qid) {
         Question=data.data[0];
         AnswerEval($scope,$http,qid);
     });
-}
+};
 function AnswerEval($scope,$http,qid){
     useranswer=document.getElementById("answers-"+qid).value;
-    var query = '/hiresh/nlp?text='
+    var query = '/hiresh/nlp?text=';
     $http.post(query+ useranswer).then(function (data) {
         student =data;
         $http.post(query+ Question.answer).then(function (data) {
@@ -54,7 +54,7 @@ function AnswerEval($scope,$http,qid){
           OR LOWER(student.lemma) = keywords.b WHERE student.text.content IS NULL AND keywords.b IS NOT NULL',
             [student, keywords]);
        //console.log(keywords);
-        console.log(keyNotinAns)
+        console.log(keyNotinAns);
 
         ansNotinKey = alasql('SELECT student.text.content as a,student.lemma as lemma \
          FROM ? AS student LEFT JOIN ? AS keywords ON LOWER(student.text.content) = LOWER(keywords.b)\
@@ -66,11 +66,11 @@ function AnswerEval($scope,$http,qid){
         if(keyNotinAns.length>0) {
             for (var i = 0; i < keyNotinAns.length; i++) {
                 if (i == keyNotinAns.length - 1) {
-                    console.log('a')
+                    console.log('a');
                     CallAPI(i, keyNotinAns[i], $http, 'end');
                 }
                 else {
-                    console.log('b')
+                    console.log('b');
                     CallAPI(i, keyNotinAns[i], $http, 'no end');
                 }
             }
@@ -126,7 +126,7 @@ function AnswerEval($scope,$http,qid){
                     Display();
                 }
             });
-    }
+    };
     function Display(){
         //console.log(synonyms);
         //console.log(ansNotinKey);
@@ -182,11 +182,11 @@ function AnswerEval($scope,$http,qid){
         //console.log(score);
         //console.log(Question.answer);
         if(score>50){
-            $('.progress-bar-info').css('background-color', 'green');;
+            $('.progress-bar-info').css('background-color', 'green');
         }
         else
         {
-            $('.progress-bar-info').css('background-color', 'red');;
+            $('.progress-bar-info').css('background-color', 'red');
         }
         $('#txtanswer').text(useranswer);
         document.getElementById('progressbar').style.width=(score==0?2:score)+'%';

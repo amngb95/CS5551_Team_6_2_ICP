@@ -44,7 +44,7 @@ loginApp.controller('FBcontroller',function ($scope,$http) {
             headers : {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
-        }
+        };
         $http.get('/getData?keywords=' + $scope.txtUsername).then(function (d) {
                 console.log(d);
                 console.log("length is " + d.data.length);
@@ -85,7 +85,7 @@ loginApp.controller('FBcontroller',function ($scope,$http) {
             },
             {scope:'email',return_scope:true}
         )
-    }
+    };
     $scope.AppLogin=function(){
         var status=CheckUser($scope);
         if(status=="valid"){

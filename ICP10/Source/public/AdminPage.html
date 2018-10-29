@@ -51,7 +51,7 @@
                     headers : {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                     }
-                }
+                };
                 console.log(dataParams);
                 var req = $http.post('/questions/create',dataParams);
 
@@ -89,7 +89,7 @@
                 request.error(function(data, status, headers, config) {
                     alert( "failure message: " + JSON.stringify({data: data}));
                 });
-            }
+            };
             //logout functionality
             $scope.logout=function() {
                 window.location.href="AdminLogin.html";

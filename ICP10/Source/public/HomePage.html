@@ -71,7 +71,7 @@
 
         });*/
         function preback(){(window.history.forward());}
-        setTimeout("preback()",0)
+        setTimeout("preback()",0);
         window.onunload=function () {
             null
         };
@@ -99,7 +99,7 @@
             document.getElementById('btnHome').click();
             $scope.logout=function(){
                 window.location.href="index.html"
-            }
+            };
             var name = sessionStorage.getItem("name");
             if(name!=null && name!=''){
                 $scope.name = name;
@@ -111,7 +111,7 @@
                 $scope.response = data.data;
                 console.log(data);
             });
-            $scope.userName = sessionStorage.getItem("username")
+            $scope.userName = sessionStorage.getItem("username");
             $scope.Evaluate=function(qId){
                 textAnalyze($scope,$http,qId);
                 $scope.answerDesc = document.getElementById("answers-"+qId).value;
@@ -127,7 +127,7 @@
                     headers : {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                     }
-                }
+                };
 
                 var req = $http.post('/answers/create',dataParams)
                     .then(function(data, status, headers, config) {
